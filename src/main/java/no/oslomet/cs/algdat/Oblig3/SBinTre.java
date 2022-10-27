@@ -102,7 +102,7 @@ public class SBinTre<T> {
 
         if (q == null) rot = p;                  // p blir rotnode
         else if (cmp < 0) q.venstre = p;         // venstre barn til q
-        else q.forelder = p;                        // høyre barn til q
+        else q.høyre = p;                        // høyre barn til q
 
         antall++;                                // én verdi mer i treet
         return true;                             // vellykket innlegging
@@ -117,7 +117,19 @@ public class SBinTre<T> {
     }
 
     public int antall(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        Node<T> p = rot; //Init p
+
+        int ant = 0; //Helpevariabel for antall
+
+        while(p != null) {
+            int cmp = comp.compare(verdi, p.verdi); //Sammenligner to verdier
+            if(cmp < 0) p = p.venstre; //Oppdaterer venstre barn
+            else {
+                if(cmp == 0) ant++; //Hvis antall like verdier er funnet, så øker antall og oppdaterer høyre barn
+                p = p.høyre;
+            }
+        }
+        return ant;
     }
 
     public void nullstill() {
