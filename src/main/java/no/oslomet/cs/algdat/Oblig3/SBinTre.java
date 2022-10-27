@@ -98,11 +98,17 @@ public class SBinTre<T> {
 
         // p er nå null, dvs. ute av treet, q er den siste vi passerte
 
-        p = new Node<>(verdi, null);                   // oppretter en ny node
+        p = new Node<>(verdi, q);                   // oppretter en ny node. Endrer så referansen forelder får riktig verdi
 
-        if (q == null) rot = p;                  // p blir rotnode
-        else if (cmp < 0) q.venstre = p;         // venstre barn til q
-        else q.høyre = p;                        // høyre barn til q
+        if (q == null) {
+            rot = p;                // p blir rotnode
+        }
+        else if (cmp < 0) {
+            q.venstre = p;          // venstre barn til q
+        }
+        else {
+            q.høyre = p;            // høyre barn til q
+        }
 
         antall++;                                // én verdi mer i treet
         return true;                             // vellykket innlegging
@@ -137,11 +143,27 @@ public class SBinTre<T> {
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
+        while(true) {
+            if (p.venstre != null) {
+                p = p.venstre;
+            } else if (p.høyre != null) {
+                p = p.høyre;
+            } else {
+                return p;
+            }
+        }
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        // throw new UnsupportedOperationException("Ikke kodet ennå!");
+        Node<T> forelder = p.forelder;
+        if(forelder == null) {
+            return null;
+        }
+        if(forelder.høyre == p || forelder.høyre == null) return forelder;
+        else return førstePostorden(forelder.høyre);
+
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
