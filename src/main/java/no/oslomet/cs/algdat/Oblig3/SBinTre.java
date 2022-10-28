@@ -131,8 +131,8 @@ public class SBinTre<T> {
             int cmp = comp.compare(verdi, p.verdi); //Sammenligner to verdier
             if(cmp < 0) p = p.venstre; //Oppdaterer venstre barn
             else {
-                if(cmp == 0) ant++; //Hvis antall like verdier er funnet, så øker antall og oppdaterer høyre barn
-                p = p.høyre;
+                if(cmp == 0) ant++; //Hvis antall like verdier er funnet, så øker antall
+                p = p.høyre;        // oppdaterer høyre barn
             }
         }
         return ant;
@@ -146,9 +146,9 @@ public class SBinTre<T> {
         // throw new UnsupportedOperationException("Ikke kodet ennå!");
         while(true) {
             if (p.venstre != null) {
-                p = p.venstre;
+                p = p.venstre;             //Venstrebarn til p
             } else if (p.høyre != null) {
-                p = p.høyre;
+                p = p.høyre;              // Høyre barn til p
             } else {
                 return p;
             }
@@ -157,22 +157,22 @@ public class SBinTre<T> {
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
         // throw new UnsupportedOperationException("Ikke kodet ennå!");
-        Node<T> forelder = p.forelder;
-        if(forelder == null) {
+        Node<T> forelder = p.forelder;              // Init forelder som p.forelder
+        if(forelder == null) {                      //Dersom forelderen null, så er det ingen nesteporden
             return null;
         }
-        if(forelder.høyre == p || forelder.høyre == null) return forelder;
-        else return førstePostorden(forelder.høyre);
+        if(forelder.høyre == p || forelder.høyre == null) return forelder;  //Returnerer forelder om høyrebarn er verdien p
+        else return førstePostorden(forelder.høyre);                        // Hvis ikke kalles på førsteorden
 
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
         // throw new UnsupportedOperationException("Ikke kodet ennå!");
-        Node<T> p = rot;
-        Node<T> forste = førstePostorden(p);
+        Node<T> p = rot;                                  //Init p som rot
+        Node<T> forste = førstePostorden(p);              //Finner første node av metoden
         oppgave.utførOppgave(forste.verdi);
-        while(forste.forelder != null) {
-            forste = nestePostorden(forste);
+        while(forste.forelder != null) {                  //While løkke som looper gjennom treet
+            forste = nestePostorden(forste);             // Opdaterer neste verdi i postorden
             oppgave.utførOppgave(Objects.requireNonNull(forste).verdi);
         }
     }
@@ -182,11 +182,11 @@ public class SBinTre<T> {
     }
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
-        if(p == null) return;
+        if(p == null) return;        //Returnerer hvis p er null
 
-        postordenRecursive(p.venstre, oppgave);
-        postordenRecursive(p.høyre,oppgave);
-        oppgave.utførOppgave(p.verdi);
+        postordenRecursive(p.venstre, oppgave);   //Kaller rekursivt for p sitt venstrbarn
+        postordenRecursive(p.høyre,oppgave);      // Kaller rekursivt for p sitt høyrebarn
+        oppgave.utførOppgave(p.verdi);           // Kjører oppgaven
     }
 
     public ArrayList<T> serialize() {
